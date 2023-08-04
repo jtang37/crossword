@@ -1,0 +1,1 @@
+Word — Frequency (total 2000-2023) — Most recent year appeared
