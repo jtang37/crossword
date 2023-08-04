@@ -1,0 +1,8 @@
+CA 1
+LI 1
+ND 1
+NE 1
+SM 1
+SN 1
+TI 1
+XE 1
