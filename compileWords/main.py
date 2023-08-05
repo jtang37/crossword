@@ -1,5 +1,5 @@
 import os
-
+from collections import defaultdict
 def parse_file(filepath):
     with open(filepath, 'r') as file:
         word_dict = {}
@@ -14,7 +14,7 @@ def parse_file(filepath):
                 word_dict[word] = {'freq': freq, 'year': year}
         return word_dict
 
-def compile_word_frequencies(root_folder, output_folder):
+"""def compile_word_frequencies(root_folder, output_folder):
     word_freq_by_length = {}
 
     for year in range(24):
@@ -43,7 +43,41 @@ def compile_word_frequencies(root_folder, output_folder):
         output_file = os.path.join(output_folder, f"len{length}.txt")
         with open(output_file, 'w') as outfile:
             for word, data in word_dict.items():
-                outfile.write(f"{word} {data['freq']} {data['year']}\n")
+                outfile.write(f"{word} {data['freq']} {data['year']}\n")"""
+
+import os
+from collections import defaultdict
+
+def compile_word_frequencies(root_folder, output_folder):
+    word_freq_by_length = {}
+
+    for year in range(24):
+        folder_path = os.path.join(root_folder, str(year))
+        if not os.path.exists(folder_path):
+            continue
+
+        for length in range(3, 22):
+            file_path = os.path.join(folder_path, f"len{length}.txt")
+            if os.path.exists(file_path):
+                word_dict = parse_file(file_path)
+                if length in word_freq_by_length:
+                    for word, data in word_dict.items():
+                        if word in word_freq_by_length[length]:
+                            word_freq_by_length[length][word] += data['freq']
+                        else:
+                            word_freq_by_length[length][word] = data['freq']
+                else:
+                    word_freq_by_length[length] = word_dict
+
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    for length, word_dict in word_freq_by_length.items():
+        output_file = os.path.join(output_folder, f"len{length}.txt")
+        with open(output_file, 'w') as outfile:
+            for word, freq in word_dict.items():
+                outfile.write(f"{word} {freq}\n")
+
 
 if __name__ == "__main__":
     current_dir = os.getcwd()
