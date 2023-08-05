@@ -40,7 +40,7 @@ def make_word_list(grid):
 
     downacross = 2
     wordlistOrdered = deepcopy(wordslist)
-    
+    didfinish = True
     for i in range(len(wordlistOrdered)):
         
         if downacross == 1:
@@ -53,5 +53,12 @@ def make_word_list(grid):
                 wordlistOrdered[i] = deepcopy(wordslist[j])
                 wordslist[j][2] = 0
                 break
-        
+            if j == len(wordslist)-1:
+                didfinish = False
+        if didfinish == False:
+            for j in range(len(wordslist)):
+                if wordslist[j][2] != 0:
+                    wordlistOrdered[i] = deepcopy(wordslist[j])
+                    wordslist[j][2] = 0
+
     return wordlistOrdered

@@ -3,7 +3,7 @@
 from copy import copy, deepcopy
 from word_list import make_word_list
 
-def solve_phase(xw, five_let, wordList):
+def solve_phase(xw, wordDataBase, wordList,wordsInPuzzle):
     #set word parameters
 
     wordSlot = wordList[0]
@@ -18,18 +18,25 @@ def solve_phase(xw, five_let, wordList):
     wordCompare = define_word(xw, wordSlot)  
     
 
-    
-    
+    lengthIndex = wordSlot[3]-3
+    list_corr_length = wordDataBase[lengthIndex]
     
     # Find the first word that fits
-    for i in range(len(five_let)):  # loop through words
-        test_word = five_let[i]
+    for i in range(len(list_corr_length)):  # loop through words
+        test_word = list_corr_length[i]
+
         
+        if  test_word[0] in wordsInPuzzle: #== test_word: #if word is in puzzle, skip
+            continue
         
         does_match = does_it_match(test_word[0], wordCompare)
 
         if does_match:  # if a word fits, delete the word from array, call the next word
             did_solve = True  # set to True now that this step is solved
+
+            #update words in puzzle list
+            wordsInPuzzleNew = deepcopy(wordsInPuzzle)
+            wordsInPuzzleNew.append(test_word[0])
             
             # update xw
             xw_next = deepcopy(xw)
@@ -37,20 +44,14 @@ def solve_phase(xw, five_let, wordList):
             
             # delete word from array
             #five_let_new = copy(five_let)
-            five_let_new = five_let[:i] + five_let[i + 1:]      #takes up a lot of memory
-            
 
-            # set new word
             
-            
-            
-
             if len(wordListNew) == 0:
                 return xw_next, True
             
             # call function for the next word
             xw_new = deepcopy(xw_next)
-            xw_new, did_solve = solve_phase(xw_next, five_let_new, wordListNew)
+            xw_new, did_solve = solve_phase(xw_next, wordDataBase, wordListNew,wordsInPuzzleNew)
             
             
             if did_solve:
