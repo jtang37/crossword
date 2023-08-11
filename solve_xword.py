@@ -2,8 +2,10 @@
 
 from copy import copy, deepcopy
 from word_list import make_word_list
+import time
+import datetime
 
-def solve_phase(xw, wordDataBase, wordList,wordsInPuzzle):
+def solve_phase(xw, wordDataBase, wordList,wordsInPuzzle,lastPrint):
     #set word parameters
 
     wordSlot = wordList[0]
@@ -32,7 +34,6 @@ def solve_phase(xw, wordDataBase, wordList,wordsInPuzzle):
         does_match = does_it_match(test_word[0], wordCompare)
 
         if does_match:  # if a word fits, delete the word from array, call the next word
-            did_solve = True  # set to True now that this step is solved
 
             #update words in puzzle list
             wordsInPuzzleNew = deepcopy(wordsInPuzzle)
@@ -42,16 +43,29 @@ def solve_phase(xw, wordDataBase, wordList,wordsInPuzzle):
             xw_next = deepcopy(xw)
             xw_next = update_xw(xw_next, wordSlot, test_word[0])
             
-            # delete word from array
-            #five_let_new = copy(five_let)
+            #check if grid is possible
+            isFillable = canFillGrid(xw_next, wordDataBase, wordSlot)
+            if not isFillable:
+                continue
 
+            timeNow = deepcopy(time.time())
+            #print every minute
+            if  timeNow - lastPrint >= 60:
+                lastPrint = deepcopy(timeNow)
+                current_time = datetime.datetime.fromtimestamp(timeNow).time()
+                print(current_time.strftime("%H:%M:%S"))
+                for row in xw_next:
+                    print(row)
+                print()
+                #continue ###################experiment (to try to get rid of clogging
             
+            did_solve = True  # set to True now that this step is solved    (I think can delete this line)
             if len(wordListNew) == 0:
                 return xw_next, True
             
             # call function for the next word
             xw_new = deepcopy(xw_next)
-            xw_new, did_solve = solve_phase(xw_next, wordDataBase, wordListNew,wordsInPuzzleNew)
+            xw_new, did_solve = solve_phase(xw_next, wordDataBase, wordListNew,wordsInPuzzleNew, lastPrint)
             
             
             if did_solve:
@@ -81,10 +95,10 @@ def define_word(xw, wordSlot):
 
 # Function to update the crossword grid
 def update_xw(xw_next, wordSlot, wordInput):
-    length = wordSlot[3]
     row = wordSlot[0]
     col = wordSlot[1]
     direc = wordSlot[2]
+    length = wordSlot[3]
     for i in range(length):
         if direc == 1:
             xw_next[row][col+i] = wordInput[i]  # across
@@ -103,3 +117,37 @@ def does_it_match(test_word, wordCompare):
         else:
             continue
     return True
+
+def canFillGrid(xw_next, wordDataBase, wordSlot):
+    
+    row = wordSlot[0]
+    col = wordSlot[1]
+    direc = wordSlot[2]
+    length = wordSlot[3]
+
+    for crossingIndex in range(len(wordSlot)-4):
+        wordSlotCrossing = deepcopy(wordSlot[crossingIndex + 4])
+        
+        wordCompare = define_word(xw_next, wordSlotCrossing)  #change
+        
+        lengthIndex = wordSlotCrossing[3]-3
+        list_corr_length = wordDataBase[lengthIndex]
+        
+        # Find the first word that fits
+        for i in range(len(list_corr_length)):  # loop through words
+            isFillable = False
+            test_word = list_corr_length[i]
+            
+            does_match = does_it_match(test_word[0], wordCompare)
+            if does_match:
+                isFillable = True
+                break
+            if i == len(list_corr_length)-1:
+                return isFillable
+    return isFillable
+
+
+
+
+    
+    
