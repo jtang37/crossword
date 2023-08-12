@@ -1,7 +1,10 @@
 # functino to make a list of words (x,y,direction,length) from a grid
 from copy import copy, deepcopy
 
-def make_word_list(grid):
+
+   
+    
+def make_word_list(grid, seed):
     wordslist = []
     word = []
     for row in range(len(grid)):    #loop through rows
@@ -160,9 +163,60 @@ def make_word_list(grid):
 
     #order list: snake from middle around grid
     #seedSquare = [7,7]
-    snake = [[7,7],[6,6],[5,5],[4,4],[3,3],[2,2],[1,1],[0,0],[3,5],[2,6],[1,7],[0,8],[4,9],[3,10],[2,11],[1,12],\
-             [0,13],[0,14],[6,12],[7,13],[8,14],[8,8],[9,9],[10,10],[11,11],[12,12],[13,13],[14,14],[11,9],[12,8],[13,7],[14,6],\
-             [10,5],[11,4],[12,3],[13,2],[14,1],[14,0],[8,2],[7,1],[6,0]]
+    #snake = [[7,7],[6,6],[5,5],[4,4],[3,3],[2,2],[1,1],[0,0],[3,5],[2,6],[1,7],[0,8],[4,9],[3,10],[2,11],[1,12],\
+    #         [0,13],[0,14],[6,12],[7,13],[8,14],[8,8],[9,9],[10,10],[11,11],[12,12],[13,13],[14,14],[11,9],[12,8],[13,7],[14,6],\
+    #         [10,5],[11,4],[12,3],[13,2],[14,1],[14,0],[8,2],[7,1],[6,0]]
+
+    
+    snake = deepcopy(seed)
+    canContinue = True
+    isDone = False
+    index = -1
+    while not isDone:
+    #for i in range(2):
+        index += 1
+        #go up and left, then up and right, then down and right, then down and left
+        if canContinue:
+            index = len(snake)-1
+        currentLoc = deepcopy(snake[index])
+        if canSnake(grid, [currentLoc[0]-1, currentLoc[1]-1], snake, 1, 1):
+            nextLoc = [currentLoc[0]-1, currentLoc[1]-1] #up and left
+            snake.append(deepcopy(nextLoc))
+            canContinue = True
+
+        elif canSnake(grid, [currentLoc[0]-1, currentLoc[1]+1], snake, 1, -1):
+            nextLoc = [currentLoc[0]-1, currentLoc[1]+1] #up and right
+            snake.append(deepcopy(nextLoc))
+            canContinue = True
+
+        elif canSnake(grid, [currentLoc[0]+1, currentLoc[1]+1], snake, -1, -1):
+            nextLoc = [currentLoc[0]+1, currentLoc[1]+1] #down and right
+            snake.append(deepcopy(nextLoc))
+            canContinue = True
+            
+        elif canSnake(grid, [currentLoc[0]+1, currentLoc[1]-1], snake, -1, 1):
+            nextLoc = [currentLoc[0]+1, currentLoc[1]-1] #down and left
+            snake.append(deepcopy(nextLoc))
+            canContinue = True
+            
+        else:
+            canContinue = False
+        
+        #if there are no options, go to previous word in the grid
+
+        
+        
+
+        if not canContinue:
+            if index == -1:
+                isDone = True
+            else:
+                index -= 2
+    
+    for row in snake:
+        print(row)   
+    
+
     wordlistOrdered = []
     usedSlots = []
     for i in range(len(snake)): #loop through squares
@@ -208,3 +262,44 @@ def make_word_list(grid):
         
     
     return wordlistOrdered
+
+def canSnake(grid, space, snake, hor, ver):
+    #cannot be black square, cannot cut diagonally across black square, cannot be an already filled word, cannot be out of grid
+    
+    if space[0] > len(grid)-1 or space[1] > len(grid[0])-1:
+        return False
+
+    if space[0] < 0 or space[1] < 0:
+        return False    
+
+    if grid[space[0]+hor][space[1]] == '■' and grid[space[0]][space[1]+ver] == '■':
+        return False
+        
+    if grid[space[0]][space[1]] == '■':
+        return False
+        
+    if any(space == slot for slot in snake):
+        return False
+        
+    
+        
+    return True
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+    
