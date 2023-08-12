@@ -213,40 +213,45 @@ def make_word_list(grid, seed):
             else:
                 index -= 2
     
-    for row in snake:
-        print(row)   
-    
+    #for row in snake:
+    #    print(row)   
+
+    #for row in wordslist:
+    #    print(row)
+    #print()
 
     wordlistOrdered = []
-    usedSlots = []
+    usedSlots = [[]]
     for i in range(len(snake)): #loop through squares
         
-        for j in range(len(wordslist)): #find word that crosses
+        for j in range(len(wordslist)): #find across word that crosses
             #if across and row is correct and start loc is <= col and end loc >= col
-            if wordslist[j][2] == 1 and wordslist[j][0] == snake[i][0] and wordslist[j][1] <= snake[i][1] and wordslist[j][1] + wordslist[j][3] >= snake[i][1] -1: 
-                
+            if wordslist[j][2] == 1 and wordslist[j][0] == snake[i][0] and wordslist[j][1] <= snake[i][1] and wordslist[j][1] + wordslist[j][3] -1 >= snake[i][1]: 
+               
                 if any(wordslist[j][:4] == slot for slot in usedSlots): #if word is already used, break
                     break
                 else:
                     usedSlots.append(deepcopy(wordslist[j][:4]))
                     wordlistOrdered.append(deepcopy(wordslist[j]))
+                    print(wordslist[j][:4])
                 break
-
-        for k in range(len(wordslist)): #find word that crosses
+        
+        for k in range(len(wordslist)): #find down word that crosses
             #if down and col is correct and start loc is <= row and end loc >= row
-            if wordslist[k][2] == 2 and wordslist[k][1] == snake[i][1] and wordslist[k][0] <= snake[i][0] and wordslist[k][0] + wordslist[k][3] >= snake[i][0] -1: 
+            if wordslist[k][2] == 2 and wordslist[k][1] == snake[i][1] and wordslist[k][0] <= snake[i][0] and wordslist[k][0] + wordslist[k][3] -1 >= snake[i][0]: 
                 if any(wordslist[k][:4] == slot for slot in usedSlots): #if word is already used, break
                     break
                 else:
                     
                     usedSlots.append(deepcopy(wordslist[k][:4]))
                     wordlistOrdered.append(deepcopy(wordslist[k]))
+                    print(wordslist[k][:4])
                 break
-
+        
         #loop through words to find first across word to cross through square
         #add word index to usedSlots
         #add word to list
-
+        
         
         #loop through words to find first down """"
             
