@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushB
 from PyQt5.QtGui import QPen, QBrush, QColor, QFont
 from PyQt5.QtCore import Qt, QRectF, pyqtSignal, QRunnable, QThreadPool, QObject
 from copy import deepcopy
-import threading
+
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -13,7 +13,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 
 from Crossword_Generator import Generate
-from Crossword_Generator import stop_generate
+
 
 square_size = []
 
@@ -27,7 +27,7 @@ class EditableTextItem(QGraphicsTextItem):
         # Emit the custom signal when text changes
         super().keyPressEvent(event)
         self.textChanged.emit(self.toPlainText(), int(self.pos().x() / self.boundingRect().width()), int(self.pos().y() / self.boundingRect().height()))
-
+'''
 class GenerateWorker(QRunnable):
     def __init__(self, xw, seed):
         super().__init__()
@@ -40,7 +40,7 @@ class GenerateWorker(QRunnable):
         self.generator.generate()
         #except GenerateStopException as e:
             #print(e)
-
+'''
 class SizeInputApp(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -93,10 +93,10 @@ class SizeInputApp(QMainWindow):
         # Create the "Stop" button
         self.stop_button = QPushButton("Stop")
         self.stop_button.setStyleSheet("background-color: white")
-        self.stop_button.clicked.connect(self.stop_crossword_generator)
-        layout.addWidget(self.stop_button)
+        #self.stop_button.clicked.connect(self.stop_crossword_generator)
+        #layout.addWidget(self.stop_button)
 
-        self.threadpool = QThreadPool()
+        
         
     def create_grid(self):
         # Retrieve user input and store it in the "size" variable
@@ -170,7 +170,7 @@ class SizeInputApp(QMainWindow):
                 elif xw[i][j] == '.':
                     xw[i][j] = '■'
 
-        seed = [14, 12]
+        seed = [0, 0]
 
         Generate(xw, seed)
         #self.run_button.setEnabled(False)
@@ -181,8 +181,8 @@ class SizeInputApp(QMainWindow):
     def generate_finished(self):
         self.run_button.setEnabled(True)
     
-    def stop_crossword_generator(self):
-        raise GenerateStopException
+    #def stop_crossword_generator(self):
+    #    raise GenerateStopException
 
     def on_text_changed(self, text, i, j):
         # Update the grid data when the user enters text
