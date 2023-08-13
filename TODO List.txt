@@ -13,6 +13,7 @@ GUI
 	add row and column numbers
 	once "run" is clicked, don't allow user to input into grid	
 	toggle symmetry
+	fit grid size to window
 
 Generate XW
 	find best seed (algorithm finding places where there are lots of long words near each other)
@@ -21,6 +22,7 @@ Generate XW
 	allow solving around 1 and 2 letter words
 	input required words into grid (like theme fills)
 	why not print every minute?
+	after x amount of time, just try new seed word (start over)
 
 	
 Word list
