@@ -233,7 +233,7 @@ def make_word_list(grid, seed):
                 else:
                     usedSlots.append(deepcopy(wordslist[j][:4]))
                     wordlistOrdered.append(deepcopy(wordslist[j]))
-                    print(wordslist[j][:4])
+                    #print(wordslist[j][:4])
                 break
         
         for k in range(len(wordslist)): #find down word that crosses
@@ -245,7 +245,7 @@ def make_word_list(grid, seed):
                     
                     usedSlots.append(deepcopy(wordslist[k][:4]))
                     wordlistOrdered.append(deepcopy(wordslist[k]))
-                    print(wordslist[k][:4])
+                    #print(wordslist[k][:4])
                 break
         
         #loop through words to find first across word to cross through square

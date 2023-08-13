@@ -5,6 +5,8 @@ from word_list import make_word_list
 import time
 import datetime
 
+
+
 def solve_phase(xw, wordDataBase, wordList,wordsInPuzzle,lastPrint):
     #set word parameters
 
@@ -75,6 +77,8 @@ def solve_phase(xw, wordDataBase, wordList,wordsInPuzzle,lastPrint):
     
     return xw, False
 
+def stop_generate():
+    raise GenerateStopException("Generate function stopped manually.")
 
 # Function to define a word
 def define_word(xw, wordSlot):

@@ -1,0 +1,28 @@
+GUI
+	Navigate Grid with arrow keys
+	continuous typing
+	stop button
+	seed button
+	new grid size button
+	print solved crossword
+	show time spent solving (and percentage complete)
+	live print crossword
+	inputs automatically capitalized
+	allow manually input snake path
+	send results to email (toggle button)
+	add row and column numbers
+	once "run" is clicked, don't allow user to input into grid	
+	toggle symmetry
+
+Generate XW
+	find best seed (algorithm finding places where there are lots of long words near each other)
+	incoroporate word score to create better phil (initially by sorting word list by score)
+	allow new words in grid	 (temporarily add word to database)
+	allow solving around 1 and 2 letter words
+	input required words into grid (like theme fills)
+	why not print every minute?
+
+	
+Word list
+	Generate score for each word
+	Weed out terrible words
